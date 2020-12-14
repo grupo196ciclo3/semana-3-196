@@ -10,7 +10,7 @@ exports.listar = async (req, res, next) => {
     } catch (error) {
         
         res.status(500).send({
-            error: Error
+            message: Error
         })
         next(error);
         
@@ -25,7 +25,7 @@ exports.signin = async (req, res, next) => {
             if(passwordIsValid){
                 const token = jwt.sign({
                     id: user.id,
-                    name: user.nombre,
+                    name: user.name,
                     email: user.email,
                     // rol: user.rol,
                 },
@@ -44,16 +44,18 @@ exports.signin = async (req, res, next) => {
                 res.status(401).send({
                     auth: false,
                     accessToken: null,
-                    razon: "Usuario y/o contraseña incorrectos"
+                    message: "Usuario y/o contraseña incorrectos"
                 })
             }
         }else{
-            res.status(404).send("Usuario y/o Contraseña Incorrectas")
+            res.status(404).send({
+                message: "Usuario y/o Contraseña Incorrectas"
+            })
         }
     } catch (error) {
 
         res.status(500).send({
-            error: Error
+            message: Error
         })
         next(error);
 
@@ -74,15 +76,15 @@ exports.register = async (req, res, next) => {
 
         }else{
 
-            res.status(404).json({
-                error: "Correo ya existente"                
+            res.status(404).send({
+                message: "Correo ya existente"                
             })
 
         }
     } catch (error) {
         
         res.status(500).send({
-            error: Error
+            message: Error
         })
         next(error);
         
@@ -103,20 +105,20 @@ exports.actualizar = async (req, res, next) => {
 
                 req.body.password = bcrypt.hashSync(req.body.password, 10);
                 const newPassword = await models.user.update({password: req.body.password}, { where: { email: user.email} })                
-                res.status(200).json({
-                    messaege: "Contraseña actualizada"
+                res.status(200).send({
+                    message: "Contraseña actualizada"
                 })
 
             }else{
-                res.status(404).json({
-                    error: "No puede poner la misma contraseña"                
+                res.status(404).send({
+                    message: "No puede poner la misma contraseña"                
                 })
             }
         }
     } catch (error) {
         
         res.status(500).send({
-            error: Error
+            message: Error
         })
         next(error);
         
