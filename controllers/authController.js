@@ -25,7 +25,7 @@ exports.signin = async (req, res, next) => {
             if(passwordIsValid){
                 const token = jwt.sign({
                     id: user.id,
-                    name: user.nombre,
+                    name: user.name,
                     email: user.email,
                     // rol: user.rol,
                 },
